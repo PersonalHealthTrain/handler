@@ -24,4 +24,8 @@ class ProjectService
 
                 this.projectRepo.save(Project(0, submission.title, submission.description, concernedStations))
             }
+
+    fun findAll(): List<Project> = projectRepo.findAll()
+
+    fun findById(id: Int): Project? = projectRepo.findById(id).orElseGet(null)
 }

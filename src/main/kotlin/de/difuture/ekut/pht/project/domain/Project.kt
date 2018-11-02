@@ -24,5 +24,5 @@ data class Project(
             name = "Project_Station",
             joinColumns = [ JoinColumn(name = "project_id") ] ,
             inverseJoinColumns = [ JoinColumn(name = "station_id") ])
-    private val stations: Set<Station> = HashSet()
+    val stations: Set<Station>
 )
