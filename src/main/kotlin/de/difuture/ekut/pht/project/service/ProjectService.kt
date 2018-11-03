@@ -22,7 +22,12 @@ class ProjectService
     fun submit(submission: ProjectSubmission) : Project =
             stationRepo.findAllById(submission.stations).toSet().let { concernedStations ->
 
-                this.projectRepo.save(Project(0, submission.title, submission.description, concernedStations))
+                this.projectRepo.save(Project(
+                        0,
+                        submission.title,
+                        submission.description,
+                        submission.train,
+                        concernedStations))
             }
 
     fun findAll(): List<Project> = projectRepo.findAll()

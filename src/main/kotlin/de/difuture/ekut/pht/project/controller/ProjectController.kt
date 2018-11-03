@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/project")
+@RequestMapping("/projects")
 @CrossOrigin
 class ProjectController
 @Autowired constructor(private val service: ProjectService) {
@@ -27,15 +27,11 @@ class ProjectController
     fun create(@RequestBody submission: ProjectSubmission) = this.service.submit(submission)
 
     @GetMapping
-    fun getAll(@RequestParam station: Int?): Projects {
-
-        val projects = this.service.findAll()
-        return Projects(station?.let { stationId ->
-            projects.filter { stationId in it.stations.map { it.id } } } ?: projects)
-    }
+    fun getAll(): Projects = Projects(service.findAll())
 
     @GetMapping
     @RequestMapping("/{id}")
     fun get(@PathVariable("id") id: Int): ResponseEntity<Project> =
             this.service.findById(id)?.let { ResponseEntity.ok(it) } ?: NOT_FOUND
 }
+

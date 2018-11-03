@@ -5,6 +5,7 @@ import de.difuture.ekut.pht.project.props.ProjectProperties
 import de.difuture.ekut.pht.project.repository.StationRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.net.URI
 
 
 @Service
@@ -15,7 +16,7 @@ class StationService
 
     init {
         if (props.createDummyStations!!) {
-            listOf("University of Tuebingen",
+            listOf("University of Tübingen",
                     "University of Ulm",
                     "University of Munich").forEach {
                 this.createStation(it)
@@ -25,5 +26,5 @@ class StationService
 
     fun findAll(): List<Station> = repo.findAll()
 
-    fun createStation(name: String) : Station = this.repo.save(Station(0, name))
+    fun createStation(name: String, uri: URI? = null) : Station = this.repo.save(Station(0, name))
 }

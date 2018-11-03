@@ -26,5 +26,11 @@ data class ProjectSubmission(
          * The Stations that the Project targets
          */
         @JsonProperty("stations")
-        val stations: Set<Int>
+        val stations: Set<Int>,
+
+        /**
+         * The train that this project targets
+         */
+        @JsonProperty("train")
+        val train: String
 )

@@ -18,11 +18,27 @@ data class Project(
     val id: Int,
     val title: String,
     val description: String,
+    val train: String,
 
     @ManyToMany(cascade = [ CascadeType.ALL ] )
     @JoinTable(
-            name = "Project_Station",
+            name = "Project_Pending",
             joinColumns = [ JoinColumn(name = "project_id") ] ,
             inverseJoinColumns = [ JoinColumn(name = "station_id") ])
-    val stations: Set<Station>
+    val pendingBy: Set<Station>,
+
+    @ManyToMany(cascade = [ CascadeType.ALL ] )
+    @JoinTable(
+            name = "Project_Approved",
+            joinColumns = [ JoinColumn(name = "project_id") ] ,
+            inverseJoinColumns = [ JoinColumn(name = "station_id") ])
+    val approvedBy: Set<Station> = emptySet(),
+
+
+    @ManyToMany(cascade = [ CascadeType.ALL ] )
+    @JoinTable(
+            name = "Project_Rejected",
+            joinColumns = [ JoinColumn(name = "project_id") ] ,
+            inverseJoinColumns = [ JoinColumn(name = "station_id") ])
+    val rejectedBy: Set<Station> = emptySet()
 )

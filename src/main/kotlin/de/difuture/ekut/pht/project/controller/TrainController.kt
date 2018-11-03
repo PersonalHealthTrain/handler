@@ -1,7 +1,6 @@
 package de.difuture.ekut.pht.project.controller
 
-import de.difuture.ekut.pht.project.api.Stations
-import de.difuture.ekut.pht.project.service.StationService
+import de.difuture.ekut.pht.project.service.TrainService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
@@ -9,11 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/stations")
+@RequestMapping("/trains")
 @CrossOrigin
-class StationController
-@Autowired constructor(private val service: StationService) {
+class TrainController
+@Autowired constructor(private val trainService: TrainService) {
 
     @GetMapping
-    fun get() = Stations(service.findAll())
+    fun getAll() = trainService.getTrains()
 }
