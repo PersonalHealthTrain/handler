@@ -7,9 +7,4 @@ data class Projects(
 
         @JsonProperty("projects")
         val projects: List<Project>
-
-
-) {
-
-
-}
+)

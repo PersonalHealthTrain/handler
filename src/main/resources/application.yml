@@ -3,3 +3,8 @@ server:
 
 project:
   createDummyStations: true
+  registry:
+    uri: http://134.2.9.126:5000
+    username: admin
+    password: adminpass
+

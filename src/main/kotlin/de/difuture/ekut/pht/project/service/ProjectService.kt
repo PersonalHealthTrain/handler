@@ -1,9 +1,13 @@
 package de.difuture.ekut.pht.project.service
 
 import de.difuture.ekut.pht.project.api.ProjectSubmission
+import de.difuture.ekut.pht.project.api.TrainSubmission
 import de.difuture.ekut.pht.project.domain.Project
+import de.difuture.ekut.pht.project.domain.RailedTrain
+import de.difuture.ekut.pht.project.domain.Station
 import de.difuture.ekut.pht.project.repository.ProjectRepository
 import de.difuture.ekut.pht.project.repository.StationRepository
+import de.difuture.ekut.pht.project.repository.RailedTrainRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -11,7 +15,8 @@ import org.springframework.stereotype.Service
 class ProjectService
 @Autowired constructor(
         private val projectRepo: ProjectRepository,
-        private val stationRepo: StationRepository) {
+        private val stationRepo: StationRepository,
+        private val trainOnRailsRepo: RailedTrainRepository) {
 
     /**
      * Creates a new Project from the provided [ProjectSubmission]
@@ -32,5 +37,17 @@ class ProjectService
 
     fun findAll(): List<Project> = projectRepo.findAll()
 
-    fun findById(id: Int): Project? = projectRepo.findById(id).orElseGet(null)
+    fun findById(id: Int): Project? = projectRepo.findById(id).orElse(null)
+
+    fun submitTrain(submission: TrainSubmission): RailedTrain? {
+
+        val project: Project = this.projectRepo.findById(submission.projectId).orElse(null) ?: return null
+        val route: List<Station> = this.stationRepo.findAllById(submission.route)
+        val railedTrain = this.trainOnRailsRepo.save(RailedTrain(0, route))
+
+        this.projectRepo.save(
+                project.copy(railedTrains = project.railedTrains.plus(railedTrain))
+        )
+        return railedTrain
+    }
 }
