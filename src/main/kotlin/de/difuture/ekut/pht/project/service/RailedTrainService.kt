@@ -30,9 +30,8 @@ class RailedTrainService
     @Scheduled(fixedDelay = 2000)
     fun stageTrains() {
 
-        val nextTrain = this.repo.getAllByCurrentStation(-1).firstOrNull()
+        val nextTrain = this.repo.getAllByCurrentStation(-1).filter { it !in stagedTrains  }.firstOrNull()
         if (nextTrain != null && nextTrain !in stagedTrains) {
-            println(nextTrain)
             this.stagedTrains.add(nextTrain)
             this.importRouteAndPushtoRegisty(nextTrain)
         }
