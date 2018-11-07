@@ -42,12 +42,6 @@ class ProjectService
     fun submitTrain(submission: TrainSubmission): RailedTrain? {
 
         val project: Project = this.projectRepo.findById(submission.projectId).orElse(null) ?: return null
-        val route: List<Station> = this.stationRepo.findAllById(submission.route)
-        val railedTrain = this.trainOnRailsRepo.save(RailedTrain(0, route))
-
-        this.projectRepo.save(
-                project.copy(railedTrains = project.railedTrains.plus(railedTrain))
-        )
-        return railedTrain
+        return trainOnRailsRepo.save(RailedTrain(0, submission.route.joinToString(separator = "-"), project))
     }
 }

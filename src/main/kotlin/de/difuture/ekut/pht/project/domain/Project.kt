@@ -2,6 +2,7 @@ package de.difuture.ekut.pht.project.domain
 
 import javax.persistence.CascadeType
 import javax.persistence.Entity
+import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.JoinColumn
@@ -27,21 +28,21 @@ data class Project(
     /*
      *  Station relations
      */
-    @ManyToMany(cascade = [ CascadeType.ALL ] )
+    @ManyToMany(cascade = [ CascadeType.ALL ], fetch = FetchType.EAGER )
     @JoinTable(
             name = "Project_Pending",
             joinColumns = [ JoinColumn(name = "project_id") ] ,
             inverseJoinColumns = [ JoinColumn(name = "station_id") ])
     val pendingBy: Set<Station>,
 
-    @ManyToMany(cascade = [ CascadeType.ALL ] )
+    @ManyToMany(cascade = [ CascadeType.ALL ], fetch = FetchType.EAGER )
     @JoinTable(
             name = "Project_Approved",
             joinColumns = [ JoinColumn(name = "project_id") ] ,
             inverseJoinColumns = [ JoinColumn(name = "station_id") ])
     val approvedBy: Set<Station> = emptySet(),
 
-    @ManyToMany(cascade = [ CascadeType.ALL ] )
+    @ManyToMany(cascade = [ CascadeType.ALL ], fetch = FetchType.EAGER )
     @JoinTable(
             name = "Project_Rejected",
             joinColumns = [ JoinColumn(name = "project_id") ] ,
@@ -49,6 +50,9 @@ data class Project(
     val rejectedBy: Set<Station> = emptySet(),
 
     // Trains that are railed for this project
-    @OneToMany(cascade = [ CascadeType.ALL ] )
+    @OneToMany(
+            fetch = FetchType.EAGER,
+            cascade = [ CascadeType.ALL ],
+            mappedBy = "project")
     val railedTrains: Set<RailedTrain> = emptySet()
 )

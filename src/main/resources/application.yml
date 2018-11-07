@@ -4,7 +4,7 @@ server:
 project:
   createDummyStations: true
   registry:
-    uri: http://134.2.9.126:5000
+    uri: http://193.196.20.100:5000
     username: admin
     password: adminpass
 
