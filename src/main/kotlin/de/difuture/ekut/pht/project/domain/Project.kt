@@ -1,6 +1,11 @@
 package de.difuture.ekut.pht.project.domain
 
+import de.difuture.ekut.pht.lib.data.TrainName
+import org.hibernate.annotations.CollectionType
 import javax.persistence.CascadeType
+import javax.persistence.CollectionTable
+import javax.persistence.Convert
+import javax.persistence.ElementCollection
 import javax.persistence.Entity
 import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
@@ -23,7 +28,10 @@ data class Project(
     val id: Int,
     val title: String,
     val description: String,
-    val train: String,
+    val email: String,
+
+    @Convert(converter = TrainNameSetConverter::class)
+    val trains: Set<TrainName>,
 
     /*
      *  Station relations

@@ -39,7 +39,11 @@ compileTestKotlin {
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
+    // The Artifactory for the PHT project
+    maven {
+        url "https://artifactory.difuture.de/pht"
+    }
 }
 
 
@@ -50,11 +54,12 @@ dependencies {
 	implementation group: 'org.glassfish.jersey.inject', name: 'jersey-hk2', version: '2.27'
     implementation group: 'com.spotify', name: 'docker-client', version: '8.14.3'
 
+    implementation group: 'de.difuture.ekut.pht.lib', name: 'data', version: '0.0.8'
+
     implementation('org.springframework.boot:spring-boot-starter-data-jpa')
 	implementation('org.springframework.boot:spring-boot-starter-web')
 	implementation('com.fasterxml.jackson.module:jackson-module-kotlin')
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	runtimeOnly('org.springframework.boot:spring-boot-devtools')
 	runtimeOnly('com.h2database:h2')
 	testImplementation('org.springframework.boot:spring-boot-starter-test')

@@ -43,8 +43,9 @@ class ProjectController
     fun submitTrain(@PathVariable("id") projectId: Int, @RequestBody submission: TrainSubmission) : ResponseEntity<RailedTrain>   // Submits a train for a project
         = this.projectService.submitTrain(submission).orNotFound()
 
+    // TODO Probably not needed
     @GetMapping
-    @RequestMapping("/{projectId}/trains/{railedTrainId}")
+    @RequestMapping("/{projectId}/dockerHubTrains/{railedTrainId}")
     fun getRailedTrain(
             @PathVariable("projectId") projectId: Int,
             @PathVariable("railedTrainId") railedTrainId: Int) : ResponseEntity<RailedTrain> =

@@ -25,14 +25,14 @@ class ProjectService
      * @return [Project] The newly generated project
      */
     fun submit(submission: ProjectSubmission) : Project =
-            stationRepo.findAllById(submission.stations).toSet().let { concernedStations ->
-
+            stationRepo.findAll().let { concernedStations ->
                 this.projectRepo.save(Project(
                         0,
                         submission.title,
                         submission.description,
-                        submission.train,
-                        concernedStations))
+                        submission.email,
+                        submission.trains,
+                        concernedStations.toSet()))
             }
 
     fun findAll(): List<Project> = projectRepo.findAll()
@@ -42,6 +42,11 @@ class ProjectService
     fun submitTrain(submission: TrainSubmission): RailedTrain? {
 
         val project: Project = this.projectRepo.findById(submission.projectId).orElse(null) ?: return null
-        return trainOnRailsRepo.save(RailedTrain(0, submission.route.joinToString(separator = "-"), project))
+        return trainOnRailsRepo.save(
+                RailedTrain(
+                        0,
+                        submission.train,
+                        submission.route,
+                        project))
     }
 }

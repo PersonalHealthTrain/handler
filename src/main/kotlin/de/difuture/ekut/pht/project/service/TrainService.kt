@@ -8,7 +8,7 @@ import java.net.URI
 import java.time.ZonedDateTime
 
 /**
- * Service responsible for fetching available trains from Docker Hub
+ * Service responsible for fetching available dockerHubTrains from Docker Hub
  */
 @Service
 class TrainService {
@@ -16,27 +16,22 @@ class TrainService {
     private val template = RestTemplate()
     private val uri = URI.create("https://registry.hub.docker.com/v2/repositories/personalhealthtrain/")
 
-    private val JsonNode.name
-    get() = this["name"].asText()
+    private fun JsonNode.name() = this["name"].asText()
 
-    private val JsonNode.namespace
-    get() = this["namespace"].asText()
+    private fun JsonNode.asDockerHubTrain() =
+           Trains.DockerHubTrain(
+                namespace = this["namespace"].asText(),
+                name = this.name(),
+                last_updated = ZonedDateTime.parse(this["last_updated"].asText())
+            )
 
-    private val JsonNode.lastUpdated
-    get() = ZonedDateTime.parse(this["last_updated"].asText())
 
     /**
-     * Returns the trains from Docker Hub
+     * Returns the dockerHubTrains from Docker Hub
      */
     fun getTrains() = Trains(
         template.getForEntity(this.uri, JsonNode::class.java).body!!["results"]
-                .filter { it.name.startsWith("train_") }
-                .map {
-            Trains.Train(
-                    namespace = it.namespace,
-                    name = it.name,
-                    last_updated = it.lastUpdated
-            )
-        }
+                .filter { it.name().startsWith("train_") }
+                .map { it.asDockerHubTrain() }
     )
 }

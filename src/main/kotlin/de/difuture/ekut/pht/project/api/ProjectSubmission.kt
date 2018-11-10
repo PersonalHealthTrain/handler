@@ -1,6 +1,7 @@
 package de.difuture.ekut.pht.project.api
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import de.difuture.ekut.pht.lib.data.TrainName
 
 /**
  * Represents a Project Submission
@@ -23,14 +24,14 @@ data class ProjectSubmission(
         val description: String,
 
         /**
-         * The Stations that the Project targets
+         * PI's email
          */
-        @JsonProperty("stations")
-        val stations: Set<Int>,
+        @JsonProperty("email")
+        val email: String,
 
         /**
-         * The train that this project targets
+         * The Trains that the Project wants to use
          */
-        @JsonProperty("train")
-        val train: String
+        @JsonProperty("trains")
+        val trains: Set<TrainName>
 )

@@ -16,9 +16,9 @@ class StationService
 
     init {
         if (props.createDummyStations!!) {
-            listOf("University of Tübingen",
-                    "University of Ulm",
-                    "University of Munich").forEach {
+            listOf("EKUT",
+                    "UU",
+                    "TUM").forEach {
                 this.createStation(it)
             }
         }

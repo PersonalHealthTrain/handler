@@ -2,7 +2,8 @@ package de.difuture.ekut.pht.project.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import javax.persistence.ElementCollection
+import de.difuture.ekut.pht.lib.data.TrainName
+import javax.persistence.Convert
 import javax.persistence.Entity
 import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
@@ -19,7 +20,11 @@ data class RailedTrain(
         @Id @GeneratedValue
         val id: Int,
 
-        val route: String,
+        @Convert(converter = TrainNameConverter::class)
+        val train: TrainName,
+
+        @Convert(converter = RouteConverter::class)
+        val route: List<Int>,
 
         @ManyToOne(fetch = FetchType.EAGER)
         @JoinColumn(name = "project_id")

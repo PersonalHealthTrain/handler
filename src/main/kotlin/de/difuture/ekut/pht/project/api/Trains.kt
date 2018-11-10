@@ -6,9 +6,9 @@ import java.time.ZonedDateTime
 data class Trains(
 
         @JsonProperty("trains")
-        val trains: List<Train>
+        val trains: List<DockerHubTrain>
 ) {
-    data class Train(
+    data class DockerHubTrain(
 
             // TODO Depend on JDregistry (client-data) for proper data types
             val namespace: String,

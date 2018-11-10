@@ -8,7 +8,7 @@ import java.net.URI
 @ConfigurationProperties(prefix = "project.registry")
 class ProjectRegistryProperties {
 
-    // The LocalTrain Registry that should be checked for new trains
+    // The LocalTrain Registry that should be checked for new dockerHubTrains
     lateinit var uri: URI
 
     // Username and password this service uses for staging

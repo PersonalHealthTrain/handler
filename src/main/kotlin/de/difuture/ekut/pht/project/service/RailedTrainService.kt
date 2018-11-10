@@ -25,7 +25,7 @@ class RailedTrainService
     private val docker = DefaultDockerClient.fromEnv().build()
 
     /**
-     * Scans for prepared trains, adds the train route and pushes the train to the reistry
+     * Scans for prepared dockerHubTrains, adds the train route and pushes the train to the reistry
      */
     @Scheduled(fixedDelay = 2000)
     fun stageTrains() {
@@ -33,44 +33,44 @@ class RailedTrainService
         val nextTrain = this.repo.getAllByCurrentStation(-1).filter { it !in stagedTrains  }.firstOrNull()
         if (nextTrain != null && nextTrain !in stagedTrains) {
             this.stagedTrains.add(nextTrain)
-            this.importRouteAndPushtoRegisty(nextTrain)
+            //this.importRouteAndPushtoRegisty(nextTrain)
         }
     }
 
     // TODO Currently the route needs to be imported like this.
     // TODO Later, we would extend the TrainAPI to allow setting the route
     // TODO via the command interface
-    private fun importRouteAndPushtoRegisty(railedTrain: RailedTrain) {
-
-        val project = railedTrain.project
-        fun createBuildContext() : Path {
-            val tempDirWithPrefix = Files.createTempDirectory(project.id.toString())
-
-            // Write routeFile and DockerFile
-            this.writeDockerfile(
-                    tempDirWithPrefix.resolve("Dockerfile"), project.train)
-
-            // Do not write the first station to the route file, since this will be used for tagging the initial image
-            this.writeRouteFile(
-                    tempDirWithPrefix.resolve("route"), railedTrain.route.split("-").map { it.toInt() }.drop(1))
-
-            this.writeRailsFile(
-                    tempDirWithPrefix.resolve("rail"), railedTrain.id)
-
-            return tempDirWithPrefix.toAbsolutePath()
-        }
-        val buildContext = createBuildContext()
-
-        // Build the new image from the Build Context with the train registry as target
-        val firstStop = railedTrain.route.split('-').first()
-
-        val hostname = props.uri.host
-        val port = props.uri.port.let { if (it == -1) "" else ":$it"}
-
-        val repoName = "$hostname$port/namespace/${project.train}:${railedTrain.id}-station.$firstStop"
-        docker.build(buildContext, repoName)
-        docker.push(repoName)
-    }
+//    private fun importRouteAndPushtoRegisty(railedTrain: RailedTrain) {
+//
+//        val project = railedTrain.project
+//        fun createBuildContext() : Path {
+//            val tempDirWithPrefix = Files.createTempDirectory(project.id.toString())
+//
+//            // Write routeFile and DockerFile
+//            this.writeDockerfile(
+//                    tempDirWithPrefix.resolve("Dockerfile"), project.train)
+//
+//            // Do not write the first station to the route file, since this will be used for tagging the initial image
+//            this.writeRouteFile(
+//                    tempDirWithPrefix.resolve("route"), railedTrain.route.split("-").map { it.toInt() }.drop(1))
+//
+//            this.writeRailsFile(
+//                    tempDirWithPrefix.resolve("rail"), railedTrain.id)
+//
+//            return tempDirWithPrefix.toAbsolutePath()
+//        }
+//        val buildContext = createBuildContext()
+//
+//        // Build the new image from the Build Context with the train registry as target
+//        val firstStop = railedTrain.route.split('-').first()
+//
+//        val hostname = props.uri.host
+//        val port = props.uri.port.let { if (it == -1) "" else ":$it"}
+//
+//        val repoName = "$hostname$port/namespace/${project.train}:${railedTrain.id}-station.$firstStop"
+//        docker.build(buildContext, repoName)
+//        docker.push(repoName)
+//    }
 
     private fun writeRouteFile(file: Path, route : List<Int>) {
 
