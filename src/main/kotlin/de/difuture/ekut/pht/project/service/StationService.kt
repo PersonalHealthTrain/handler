@@ -18,7 +18,7 @@ class StationService
         if (props.createDummyStations!!) {
             listOf("EKUT",
                     "UU",
-                    "TUM").forEach {
+                    "MRI").forEach {
                 this.createStation(it)
             }
         }
