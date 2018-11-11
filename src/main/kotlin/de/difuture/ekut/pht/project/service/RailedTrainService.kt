@@ -17,25 +17,43 @@ class RailedTrainService
         private val repo: RailedTrainRepository,
         private val props: ProjectRegistryProperties) {
 
-    // TODO Move to persiance
+    // TODO Move to persistence
     private val stagedTrains = HashSet<RailedTrain>()
 
     fun findById(id: Int) : RailedTrain? = repo.findById(id).orElse(null)
+
+
+
+    // TODO For testing, periodically move each Railed Train forward
+    @Scheduled(fixedDelay = 5000)
+    fun progress() {
+
+        repo.saveAll(repo.findAll().map {
+
+            val current = it.currentStation
+            if (current == it.route.size) {
+                it
+            } else {
+                it.copy(currentStation = current+1)
+            }
+        })
+    }
+
 
     private val docker = DefaultDockerClient.fromEnv().build()
 
     /**
      * Scans for prepared dockerHubTrains, adds the train route and pushes the train to the reistry
      */
-    @Scheduled(fixedDelay = 2000)
-    fun stageTrains() {
-
-        val nextTrain = this.repo.getAllByCurrentStation(-1).filter { it !in stagedTrains  }.firstOrNull()
-        if (nextTrain != null && nextTrain !in stagedTrains) {
-            this.stagedTrains.add(nextTrain)
-            //this.importRouteAndPushtoRegisty(nextTrain)
-        }
-    }
+    //    @Scheduled(fixedDelay = 2000)
+    //    fun stageTrains() {
+    //
+    //        val nextTrain = this.repo.getAllByCurrentStation(-1).filter { it !in stagedTrains  }.firstOrNull()
+    //        if (nextTrain != null && nextTrain !in stagedTrains) {
+    //            this.stagedTrains.add(nextTrain)
+    //            //this.importRouteAndPushtoRegisty(nextTrain)
+    //        }
+    //    }
 
     // TODO Currently the route needs to be imported like this.
     // TODO Later, we would extend the TrainAPI to allow setting the route

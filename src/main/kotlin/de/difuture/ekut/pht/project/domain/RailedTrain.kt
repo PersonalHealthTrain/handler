@@ -3,6 +3,7 @@ package de.difuture.ekut.pht.project.domain
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import de.difuture.ekut.pht.lib.data.TrainName
+import java.time.Instant
 import javax.persistence.Convert
 import javax.persistence.Entity
 import javax.persistence.FetchType
@@ -37,11 +38,8 @@ data class RailedTrain(
          */
         val currentStation: Int = -1
 ) {
-
+    val createdAt = Instant.now()
     override fun toString() = "RailedTrain[id=$id,route=$route,currentStation=$currentStation]"
-
-
     override fun equals(other: Any?) = other is RailedTrain && other.id == this.id
-
     override fun hashCode() = this.id.hashCode()
 }
