@@ -17,8 +17,9 @@ class StationService
     init {
         if (props.createDummyStations!!) {
             listOf("EKUT",
-                    "UU",
-                    "MRI").forEach {
+                   "UU",
+                   "MRI",
+                   "KUM").forEach {
                 this.createStation(it)
             }
         }
