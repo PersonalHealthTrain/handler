@@ -1,7 +1,7 @@
 buildscript {
 	ext {
-		kotlinVersion = '1.3.0'
-		springBootVersion = '2.1.0.RELEASE'
+		kotlinVersion = '1.3.20'
+		springBootVersion = '2.1.2.RELEASE'
 	}
 	repositories {
 		mavenCentral()
@@ -22,7 +22,7 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
 group = 'de.difuture.ekut.pht'
-version = '0.0.1'
+version = '0.0.2'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 compileKotlin {
@@ -48,13 +48,7 @@ repositories {
 
 
 dependencies {
-	// This is required to make the Spotify Docker client work. see:
-	// https://github.com/spotify/docker-client/issues/1030
-	implementation group: 'org.glassfish.jersey.bundles.repackaged', name: 'jersey-guava', version: '2.25.1'
-	implementation group: 'org.glassfish.jersey.inject', name: 'jersey-hk2', version: '2.27'
-    implementation group: 'com.spotify', name: 'docker-client', version: '8.14.3'
-
-    implementation group: 'de.difuture.ekut.pht.lib', name: 'data', version: '0.0.8'
+    implementation group: 'de.difuture.ekut.pht', name: 'lib', version: '0.9.1'
 
     implementation('org.springframework.boot:spring-boot-starter-data-jpa')
 	implementation('org.springframework.boot:spring-boot-starter-web')
